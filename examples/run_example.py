@@ -3,11 +3,16 @@
 Writes `results/j_vs_S.csv` with columns: S, j, j_rel
 Optionally saves `figures/j_vs_S.png` if matplotlib is installed.
 """
-import csv
+import sys
 import os
+import csv
 import numpy as np
 
-from model.solver import solve, krg
+# Ensure project root is on `sys.path` so `from model.solver import ...` works
+# when running this script directly from any working directory.
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from model import solve, krg
 
 
 def compute_j_for_S(S, D0=1.0, n=2.0, k_r=1.0, L=1.0, N=101, C_left=1.0, C_right=0.0):

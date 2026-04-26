@@ -4,7 +4,7 @@ import numpy as np
 
 sys.path.append(r'.')
 
-from model.solver import solve, krg
+from model import solve, krg
 
 
 class TestSolver(unittest.TestCase):

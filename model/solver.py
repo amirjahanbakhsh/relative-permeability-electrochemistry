@@ -7,21 +7,7 @@ with R = k_r * C * krg(S)
 This module provides `solve(...)` which returns a dict with keys: `x`, `C`, `S`, `D`.
 """
 import numpy as np
-
-
-def krg(s, n=2.0):
-    """Corey-type relative permeability for gas phase: krg = (1 - S)^n
-
-    s : array-like, saturation (liquid fraction) in [0,1]
-    n : exponent
-    """
-    s = np.asarray(s)
-    return np.clip((1.0 - s) ** n, 0.0, 1.0)
-
-
-def effective_diffusivity(s, D0=1.0, n=2.0):
-    """Compute effective diffusivity at nodes: D_eff = D0 * krg(S)"""
-    return D0 * krg(s, n=n)
+from .physics import krg, effective_diffusivity
 
 
 def solve(D0=1.0, n=2.0, k_r=0.0, L=1.0, N=101, C_left=1.0, C_right=0.0, saturation=None):
@@ -54,7 +40,7 @@ def solve(D0=1.0, n=2.0, k_r=0.0, L=1.0, N=101, C_left=1.0, C_right=0.0, saturat
         if s.shape != x.shape:
             raise ValueError("saturation must be None, callable, or array of length N")
 
-    # Effective diffusivity at nodes
+    # Effective diffusivity at nodes (physics helpers)
     D_nodes = effective_diffusivity(s, D0=D0, n=n)
 
     # Interfacial diffusivity (harmonic mean) between nodes i and i+1
